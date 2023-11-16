@@ -1,0 +1,11 @@
+{
+  "name": "herbie-derbie",
+  "version": "1.0.0",
+  "description": "Drive Capital code challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Topher Benjamin",
+  "license": "ISC"
+}
