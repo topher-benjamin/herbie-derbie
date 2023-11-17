@@ -1,11 +1,11 @@
-const fs = require('fs');
-const path = require('path');
-const { readInput } = require('../index');
+const processFile = require('./index'); // Adjust the path if necessary
 
-describe('readInput', () => {
-  it('should read input.txt without errors', () => {
-    const inputPath = path.join(__dirname, '..', 'input.txt');
-    const input = fs.readFileSync(inputPath, 'utf-8');
-    expect(() => readInput(input)).not.toThrow();
+describe('file processing', () => {
+  it('processes the file without errors', async () => {
+    await expect(processFile('testData/input.txt')).resolves.toBeUndefined();
+  });
+
+  it('throws and error if the file does not exist', async () => {
+    await expect(processFile('')).rejects.toThrow();
   });
 });
