@@ -1,17 +1,17 @@
+import { inputData } from "./inputData.js";
 
-const processFile = require("./processFile");
+// main method which will orchestrate the various functions
+const main = () => {
+  console.log("Starting the application");
 
+  // get the data from the file
+  const textData = retrieveDataFromFile().validate();
 
-// Allow command-line usage
-if (require.main === module) {
-  const fileName = process.argv[2];
-  if (!fileName) {
-    console.log('Please provide a file name. Usage: node index.js input.txt');
-    process.exit(1);
-  }
-  processFile(fileName)
-    .then(() => console.log('File has been processed'))
-    .catch(error => console.error('Error processing file:', error));
-}
+  // ingest data from file and input into a graph data structure
+  inputData(textData);
 
+  // analyze data and output results
+  // analyzeData();
+};
 
+main();
