@@ -1,7 +1,7 @@
 import fs from "fs";
 import readline from "readline";
 
-async function processFile(fileName) {
+export async function processFile(fileName) {
   const partners = [];
   const companies = [];
   const employees = [];
@@ -45,7 +45,7 @@ async function processFile(fileName) {
 }
 
 // function to analyze the network
-const analyzeNetwork = async (data) => {
+export const analyzeNetwork = async (data) => {
   console.log("Analyzing the network");
   // a dummy implementation
   return [
@@ -56,7 +56,7 @@ const analyzeNetwork = async (data) => {
 };
 
 // main method which will orchestrate the various functions
-const main = async () => {
+export const main = async () => {
   const fileName = process.argv[2];
 
   const data = await processFile(fileName);
