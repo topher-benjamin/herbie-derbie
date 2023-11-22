@@ -10,7 +10,7 @@ npm install
 ``` 
 
 ### Run
-1. Replace the value for NEO4J_PASSWORD with the one supplied in my email (GitHub regularly removes such things from repos)
+1. create a `.env` file in the root directory using the values from my email.
 2. Run the following command in the root of this project
 ```
 node index.js input.txt
