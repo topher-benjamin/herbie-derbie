@@ -31,16 +31,16 @@ export async function processLine(line) {
   
     switch (command) {
       case 'Partner':
-        await createPartner(parts[1], session);
+        await createPartner(parts[1]);
         break;
       case 'Company':
-        await createCompany(parts[1], session);
+        await createCompany(parts[1]);
         break;
       case 'Employee':
-        await createEmployee(parts[1], parts[2], session);
+        await createEmployee(parts[1], parts[2]);
         break;
       case 'Contact':
-        await createContact(parts[1], parts[2], parts[3], session);
+        await createContact(parts[1], parts[2], parts[3]);
         break;
       default:
         console.error(`Invalid command: ${parts[0]}`);
@@ -48,3 +48,19 @@ export async function processLine(line) {
     }
   }
   
+
+  export async function processFile() {
+    // Could refactor here to add suport for STDIN
+    const fileName = process.argv[2];
+    const fileStream = fs.createReadStream(fileName);
+    const rl = readline.createInterface({
+      input: fileStream,
+      crlfDelay: Infinity,
+    });
+
+    // WARNING: potential memory leak if file is too large. Promises be like that.
+    for await (const line of rl) {
+      await processLine(line);
+    }
+
+}

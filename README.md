@@ -51,7 +51,7 @@ My own assumptions:
 - This program should be able to scale to thousands of companies and tens of thousands of connections.
 - This program should be modular and able to handle additional requirements without a massive refactor.
 - Running the program via command line is less important than ability to scale
-- The time consideration for completing this assessment allows for me to be deliberate
+
 
 
 Thanks for the fun problem. I've enjoyed learning about Graph dbs either way.
