@@ -16,6 +16,7 @@ npm install
 node index.js input.txt
 ```
 
+*** Note: This program does require a connection to an instance of Neo4j. For ease of use, I have included connection details to a free AuraDB instance. Let me know if these do not work and I can help troubleshoot either the hosted instance or setting up a local one. ***
 
 ## Approach
 Upon first read of the problem, I immediately thought this would be a great use case for graph dbs. Something I had absolutely no experience with, but was interested in learning.
