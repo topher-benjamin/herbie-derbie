@@ -44,6 +44,7 @@ Should this program be tested at scale, I would expect it to start to falter eit
 
 ## Assumptions
 Along with those outlined in the requirements, I did make a few assumptions of my own:
+
 Requirement assumptions:
 - File data is well formed
 - All names are universally unique
