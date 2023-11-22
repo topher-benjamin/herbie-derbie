@@ -17,6 +17,7 @@ export function validateLine(parts) {
     process.exit(1);
   }
 
+  // Validate that Contacts have only valid contact types
   if (command === 'Contact' && !VALID_CONTACT_TYPES.includes(parts[3])) {
     console.error(`Invalid contact type: ${parts[3]}`);
     process.exit(1);
