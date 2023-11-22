@@ -5,6 +5,7 @@ import neo4j from "neo4j-driver";
 // const password = "<your-password>";
 // const driver = neo4j.driver(uri, neo4j.auth.basic(user, password));
 
+
 export async function createEmployee(employeeName, companyName, session) {
   try {
     const result = await session.run(
@@ -70,7 +71,7 @@ export async function createContact(
   }
 }
 
-export async function analyze(session){
+export async function analyzeNetwork(session){
     try{
         const result = await session.run(`
         MATCH (c:Company)
@@ -81,21 +82,7 @@ export async function analyze(session){
         RETURN c.name AS CompanyName, strongestRelation.partner.name AS PartnerName, strongestRelation.contactStrength AS RelationshipStrength
         ORDER BY c.name
 `);
-        const r = result.records;
-        const output = r.map(record => {
-            const companyName = record.get('CompanyName');
-            const partnerName = record.get('PartnerName');
-            const relationshipStrength = record.get('RelationshipStrength');
-      
-            // Format the output for each company
-            if (partnerName && relationshipStrength > 0) {
-              return `${companyName}: ${partnerName} (${relationshipStrength})`;
-            } else {
-              return `${companyName}: No current relationship`;
-            }
-          });
-
-          return output;
+        return result.records;
 
     } catch (error){
         console.error("Error retrieving nodes:", error);
@@ -111,4 +98,21 @@ export async function nukeDb(session){
     } catch (error){
         console.error("Error nuking db:", error);
     }
+}
+
+export function displayResults(results) {
+    const output = results.map(record => {
+        const companyName = record.get('CompanyName');
+        const partnerName = record.get('PartnerName');
+        const relationshipStrength = record.get('RelationshipStrength');
+  
+        // Format the output for each company
+        if (partnerName && relationshipStrength > 0) {
+          return `${companyName}: ${partnerName} (${relationshipStrength})`;
+        } else {
+          return `${companyName}: No current relationship`;
+        }
+      });
+
+  console.log(output.join("\n"));
 }
