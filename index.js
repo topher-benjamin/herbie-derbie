@@ -1,11 +1,13 @@
+import dotenv from "dotenv";
+dotenv.config();
 import fs from "fs";
 import readline from "readline";
 import neo4j from "neo4j-driver";
-import { createCompany, viewAllNodes } from "./neo4jOperations.js";
+import { analyze, createCompany, createContact, createEmployee, createPartner, nukeDb } from "./neo4jOperations.js";
 
-const URI = "neo4j+s://1f8327e8.databases.neo4j.io";
-const USER = "neo4j";
-const PASSWORD = "CdkT6VN4K0v8CwSe1XXJ_18WyuRUVktsWAjAW09OmWw";
+const URI = process.env.NEO4J_URI;
+const USER = process.env.NEO4J_USER;
+const PASSWORD = process.env.NEO4J_PASSWORD;
 const driver = neo4j.driver(URI, neo4j.auth.basic(USER, PASSWORD));
 const session = driver.session();
 
@@ -16,17 +18,16 @@ async function processLine(line) {
 
   switch (command) {
     case "Partner":
-      console.log("partner", line);
+      await createPartner(parts[1], session);
       break;
     case "Company":
-      console.log("company", line);
       await createCompany(parts[1], session);
       break;
     case "Employee":
-      console.log("employee", line);
+      await createEmployee(parts[1], parts[2], session);
       break;
     case "Contact":
-      console.log("contact", line);
+      await createContact(parts[1], parts[2], parts[3], session);
       break;
     default:
       console.error(`Invalid command: ${parts[0]}`);
@@ -48,17 +49,14 @@ export async function processFile(fileName) {
 
 }
 
+// function to display the results
+export const displayResults = (results) => {
+  console.log('results', results.join('\n') );
+};
+
 // function to analyze the network
 export const analyzeNetwork = async () => {
-  console.log("Analyzing the network");
-  
-  return viewAllNodes(session);
-  // a dummy implementation
-  // return [
-  //   "ACME: No current relationship",
-  //   "Globex: Chris (2)",
-  //   "Hooli: Molly (1)",
-  // ];
+  return await analyze(session);
 };
 
 // main method which will orchestrate the various functions
@@ -70,11 +68,11 @@ export const main = async () => {
   const results = await analyzeNetwork();
 
   // output results to console
-  console.log('results', results);
 
+  displayResults(results);
 
-  // close the session
-  await session.close();
+  // cleanup db
+  await nukeDb(session);
   // close the driver
   await driver.close();
 };
