@@ -6,7 +6,6 @@ import { validateLine } from "./fileOperations.js";
 import { analyzeNetwork, connectToDb, closeDbConnection, createCompany, createContact, createEmployee, createPartner} from "./neo4jOperations.js";
 
 
-
 async function processLine(line) {
   const parts = line.split(' ');
   const command = parts[0];
@@ -32,21 +31,28 @@ async function processLine(line) {
   }
 }
 
-
 export async function processFile() {
-    // Could refactor here to add suport for STDIN
-    const fileName = process.argv[2];
-    const fileStream = fs.createReadStream(fileName);
-    const rl = readline.createInterface({
-      input: fileStream,
-      crlfDelay: Infinity,
-    });
+    let rl;
+
+    if (process.argv.length > 2){
+      const fileName = process.argv[2];
+      const fileStream = fs.createReadStream(fileName);
+      rl = readline.createInterface({
+        input: fileStream,
+        crlfDelay: Infinity,
+      });
+    } else {
+      rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+        terminal: false
+      })
+    }
 
     // WARNING: potential memory leak if file is too large. Promises be like that.
     for await (const line of rl) {
       await processLine(line);
     }
-
 }
 
 export function displayResults(results) {
@@ -65,7 +71,6 @@ export function displayResults(results) {
 
   console.log(output.join("\n"));
 }
-
 
 export const main = async () => {
   await connectToDb();
